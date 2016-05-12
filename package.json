@@ -1,0 +1,14 @@
+{
+  "name": "food-finder",
+  "version": "0.1.0",
+  "description": "Find food",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "Kevan Ahlquist <kevan@kevanahlquist.com> (https://kevanahlquist.com/)",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.13.4"
+  }
+}
