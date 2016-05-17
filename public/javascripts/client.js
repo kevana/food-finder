@@ -13,3 +13,8 @@ document.getElementById('report-food').addEventListener('click', function(e) {
   }
   navigator.geolocation.getCurrentPosition(success, error, {enableHighAccuracy: true})
 });
+
+var socket = io('/food');
+socket.on('food-report', function (data) {
+  console.log('Received food report', data)
+});

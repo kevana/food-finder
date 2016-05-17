@@ -28,6 +28,15 @@ var server = http.createServer(app);
  */
 
 models.sequelize.sync().then(function () {
+  var io = require('socket.io')(server).of('/food');
+  io.on('connection', function(socket){
+    socket.on('event', function(data){
+    });
+    socket.on('disconnect', function(){});
+    setInterval(() => {
+      socket.emit('food-report', {msg: 'This is a new food report'})
+    }, 2000)
+  });
   server.listen(port);
   server.on('error', onError);
   server.on('listening', onListening);

@@ -7,11 +7,11 @@
   "test": {
     "database": "database_test",
     "dialect": "sqlite",
-    "storage": "build/database_test.sqlite"
+    "storage": "/data/database_test.sqlite"
   },
   "production": {
     "database": "database_production",
     "dialect": "sqlite",
-    "storage": "build/database_production.sqlite"
+    "storage": "/data/database_production.sqlite"
   }
 }
