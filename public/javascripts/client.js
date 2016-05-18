@@ -1,5 +1,6 @@
 document.getElementById('report-food').addEventListener('click', function(e) {
   console.log('received click', e);
+  document.getElementById('report-food').disabled = true;
   function success(pos){
     console.log('received position', pos);
     $.post('/reportFood', {
@@ -8,9 +9,13 @@ document.getElementById('report-food').addEventListener('click', function(e) {
       description: document.getElementById("description").value,
       accuracy: pos.coords.accuracy
     })
+      .always(function() {
+        document.getElementById('report-food').disabled = false;
+      })
   }
   function error() {
     alert('Unable to get current position');
+    document.getElementById('report-food').disabled = false;
   }
   navigator.geolocation.getCurrentPosition(success, error, {enableHighAccuracy: true})
 });
