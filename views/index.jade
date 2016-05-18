@@ -3,5 +3,15 @@ extends layout
 block content
   h1= title
   p Welcome to #{title}
+  input(id='description', placeholder='What kind of food is it?')
+  br
   button(id='report-food') Report food at this location
+  h2 Recent food reports
+  if foodReports.length
+    ul
+      each report in foodReports
+        li= report.createdAt.toLocaleTimeString() + ' | '
+          a(href='https://www.google.com/maps?q=' + report.latitude + ',' + report.longitude, target='_blank') Location
+  else
+    p No food has been reported recently
   script(src='javascripts/client.js')
