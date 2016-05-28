@@ -6,6 +6,9 @@ block content
   input(id='description', placeholder='What kind of food is it?')
   br
   button(id='report-food') Report food at this location
+
+  h2 Debug
+  button(id='sendPushNotification') Send push Notification
   h2 Recent food reports
   if foodReports.length
     ul
@@ -15,3 +18,4 @@ block content
   else
     p No food has been reported recently
   script(src='javascripts/client.js')
+  script(src='sw-register.js')

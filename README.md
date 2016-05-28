@@ -15,3 +15,12 @@ DEBUG=food-finder:* npm start
 docker build -t food-finder .
 docker run -it --rm --name food-finder food-finder
 ```
+
+## Tech
+
+* Express + Sequelize
+* Docker
+* WebSockets
+* Geolocation API
+* Desktop Notifications
+* Push notifications

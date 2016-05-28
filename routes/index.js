@@ -3,6 +3,9 @@ var router = express.Router();
 
 var models  = require('../models');
 var socket = require('../socket');
+var webPush = require('web-push');
+
+webPush.setGCMAPIKey(process.env.GCM_API_KEY);
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
@@ -40,6 +43,19 @@ router.post('/reportFood', function (req, res) {
           accuracy: req.body.accuracy
         }});
     });
+});
+
+router.post('/register', function(req, res) {
+  res.sendStatus(201); // todo save endpoint
+});
+
+router.post('/sendNotification', function(req, res) {
+    webPush.sendNotification(req.query.endpoint, {
+      TTL: req.query.ttl
+    })
+      .then(function() {
+        res.sendStatus(201);
+      });
 });
 
 module.exports = router;

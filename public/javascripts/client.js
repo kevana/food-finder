@@ -1,7 +1,7 @@
-document.getElementById('report-food').addEventListener('click', function(e) {
+document.getElementById('report-food').addEventListener('click', function (e) {
   console.log('received click', e);
   document.getElementById('report-food').disabled = true;
-  function success(pos){
+  function success(pos) {
     console.log('received position', pos);
     $.post('/reportFood', {
       latitude: pos.coords.latitude,
@@ -9,7 +9,7 @@ document.getElementById('report-food').addEventListener('click', function(e) {
       description: document.getElementById("description").value,
       accuracy: pos.coords.accuracy
     })
-      .always(function() {
+      .always(function () {
         document.getElementById('report-food').disabled = false;
       })
   }
@@ -27,3 +27,14 @@ socket.on('food-report', function (data) {
     body: 'Reported at: ' + new Date(data.createdAt).toLocaleTimeString()
   });
 });
+
+document.getElementById('sendPushNotification').onclick = function() {
+  var delay = 1;
+  var ttl =  10;
+  fetch('./sendNotification?endpoint=' + endpoint + '&delay=' + delay +
+    '&ttl=' + ttl,
+    {
+      method: 'post'
+    }
+  );
+};
