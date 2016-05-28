@@ -46,13 +46,19 @@ router.post('/reportFood', function (req, res) {
 });
 
 router.post('/register', function(req, res) {
-  res.sendStatus(201); // todo save endpoint
+  models.PushSubscription
+    .findOrCreate({where: {endpoint: req.body.endpoint}})
+    .then(([pushSubscription, created]) => {
+      res.sendStatus(created ? 201 : 204);
+    })
 });
 
 router.post('/sendNotification', function(req, res) {
-    webPush.sendNotification(req.query.endpoint, {
-      TTL: req.query.ttl
-    })
+  models.PushSubscription.findAll()
+    .then(pushSubscriptions =>
+      Promise.all(pushSubscriptions.map(pushSubscription =>
+        webPush.sendNotification(pushSubscription.endpoint, { TTL: 10 })))
+    )
       .then(function() {
         res.sendStatus(201);
       });
