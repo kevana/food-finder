@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-var models  = require('../models');
+var models = require('../models');
 var socket = require('../socket');
 var webPush = require('web-push');
 
@@ -22,8 +22,22 @@ router.get('/', (req, res, next) => {
         title: 'Food Finder',
         foodReports
       });
-  });
+    });
 });
+
+function sendPushNotifications(payload) {
+  return models.PushSubscription.findAll()
+    .then(pushSubscriptions =>
+      Promise.all(pushSubscriptions.map(pushSubscription =>
+        webPush.sendNotification(pushSubscription.endpoint, {
+          TTL: 10,
+          payload: JSON.stringify(payload),
+          userPublicKey: pushSubscription.key,
+          userAuth: pushSubscription.authSecret
+        }))
+      )
+    )
+}
 
 router.post('/reportFood', function (req, res) {
   models.FoodReport
@@ -32,7 +46,9 @@ router.post('/reportFood', function (req, res) {
       longitude: req.body.longitude,
       description: req.body.description
     })
-    .then(({ dataValues }) => {
+    .then(({dataValues}) => {
+      console.log(dataValues);
+      sendPushNotifications(dataValues);
       socket.emit(dataValues);
       res.json({
         success: true,
@@ -41,27 +57,28 @@ router.post('/reportFood', function (req, res) {
           latitude: req.body.latitude,
           longitude: req.body.longitude,
           accuracy: req.body.accuracy
-        }});
+        }
+      });
     });
 });
 
-router.post('/register', function(req, res) {
+router.post('/register', function (req, res) {
   models.PushSubscription
-    .findOrCreate({where: {endpoint: req.body.endpoint}})
+    .findOrCreate({where: {
+      endpoint: req.body.endpoint,
+      key: req.body.key,
+      authSecret: req.body.authSecret
+    }})
     .then(([pushSubscription, created]) => {
       res.sendStatus(created ? 201 : 204);
     })
 });
 
-router.post('/sendNotification', function(req, res) {
-  models.PushSubscription.findAll()
-    .then(pushSubscriptions =>
-      Promise.all(pushSubscriptions.map(pushSubscription =>
-        webPush.sendNotification(pushSubscription.endpoint, { TTL: 10 })))
-    )
-      .then(function() {
-        res.sendStatus(201);
-      });
+router.post('/sendNotification', function (req, res) {
+  sendPushNotifications()
+    .then(function () {
+      res.sendStatus(201);
+    });
 });
 
 module.exports = router;

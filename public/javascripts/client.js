@@ -20,14 +20,15 @@ document.getElementById('report-food').addEventListener('click', function (e) {
   navigator.geolocation.getCurrentPosition(success, error, {enableHighAccuracy: true})
 });
 
-var socket = io('/food');
-socket.on('food-report', function (data) {
-  console.log('Received food report', data);
-  Push.create(data.description || 'New food report!', {
-    body: 'Reported at: ' + new Date(data.createdAt).toLocaleTimeString()
+if (!'serviceWorker' in navigator) {
+  var socket = io('/food');
+  socket.on('food-report', function (data) {
+    console.log('Received food report', data);
+    Push.create(data.description || 'New food report!', {
+      body: 'Reported at: ' + new Date(data.createdAt).toLocaleTimeString()
+    });
   });
-});
-
+}
 document.getElementById('sendPushNotification').onclick = function() {
   var delay = 1;
   var ttl =  10;
