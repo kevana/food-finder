@@ -2,10 +2,12 @@ doctype html
 html
   head
     title= title
+    link(rel="stylesheet", href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css")
     link(rel='stylesheet', href='/stylesheets/style.css')
     link(rel="manifest", href="manifest.json")
   body
     script(src="http://cdn.socket.io/socket.io-1.4.5.js")
     script(src="https://code.jquery.com/jquery-2.2.3.min.js",integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo=",crossorigin="anonymous")
     script(src="javascripts/vendor/push.js")
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.3.2/spin.min.js")
     block content

@@ -3,12 +3,12 @@ extends layout
 block content
   h1= title
   p Welcome to #{title}
-  input(id='description', placeholder='What kind of food is it?')
-  br
-  button(id='report-food') Report food at this location
+  p
+    input(id='description', placeholder='What kind of food is it?')
+  button(id='report-food', class='pure-button pure-button-primary') Report food at this location
 
   h2 Debug
-  button(id='sendPushNotification') Send push Notification
+  button(id='sendPushNotification', class='pure-button') Send push Notification
   h2 Recent food reports
   if foodReports.length
     ul

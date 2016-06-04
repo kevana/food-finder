@@ -9,5 +9,9 @@ var sock;
 
 module.exports = {
   init,
-  emit: (report) => sock.emit('food-report', report)
+  emit: (report) => {
+    if (sock) {
+      sock.emit('food-report', report)
+    }
+  }
 };
